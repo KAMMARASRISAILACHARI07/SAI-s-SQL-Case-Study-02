@@ -1,0 +1,54 @@
+--> SQL CODE 
+
+ CREATE TABLE Departments_cs_02 (DepartmentID INT PRIMARY KEY,DepartmentName VARCHAR(50),HeadOfDepartment VARCHAR(100),Location VARCHAR(100));-- Inserting Department data
+ INSERT INTO Departments_cs_02 (DepartmentID, DepartmentName, HeadOfDepartment,Location)VALUES 
+ (1, 'Computer Science', 'Dr. Smith', 'Main Building'),
+ (2, 'Business Administration', 'Prof. Johnson', 'West Wing'),
+ (3, 'Engineering', 'Dr. Adams', 'East Wing');
+  select * from Departments_cs_02;
+
+ CREATE TABLE Students_cs_02 (StudentID INT PRIMARY KEY,FirstName VARCHAR(50),LastName VARCHAR(50),DateOfBirth DATE,Gender CHAR(1),
+ Program VARCHAR(50),DepartmentID INT,DateOfEnrollment DATE,FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID));-- Inserting Students data
+ 
+ INSERT INTO Students_cs_02 (StudentID, FirstName, LastName, DateOfBirth, Gender, Program,
+ DepartmentID, DateOfEnrollment)VALUES
+ (101, 'John', 'Doe', '2000-05-15', 'M', 'Computer Science', 1, '2022-09-01'),
+ (102, 'Jane', 'Smith', '2001-08-22', 'F', 'Business Administration', 2, '2023-01-10'),
+ (103, 'Bob', 'Johnson', '1999-11-10', 'M', 'Engineering', 3, '2021-07-05');
+ select * from Students_cs_02;
+
+ CREATE TABLE Faculty_cs_02 (FacultyID INT PRIMARY KEY,FirstName VARCHAR(50),LastName VARCHAR(50),DepartmentID INT,Position VARCHAR(50),
+ FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID));
+ 
+ INSERT INTO Faculty_cs_02 (FacultyID, FirstName, LastName, DepartmentID, Position)VALUES 
+ (201, 'Emily', 'Clark', 1, 'Assistant Professor'),
+ (202, 'Michael', 'Brown', 2, 'Associate Professor'),
+ (203, 'Sophia', 'Wilson', 3, 'Professor');
+
+select * from Faculty_cs_02;
+
+--Create Departments,Students,Faculty tables.
+select * from Departments_cs_02;
+select * from Students_cs_02;
+select * from Faculty_cs_02;
+
+--Retrieve all students in the Computer Science department.
+ SELECT * FROM Students_cs_02 WHERE DepartmentID = (SELECT DepartmentID FROM
+ Departments_cs_02 WHERE DepartmentName = 'Computer Science');
+
+--Update John Doe's program to Computer Science Honors.
+ UPDATE Students_cs_02 SET Program = 'Computer Science Honors' WHERE StudentID = 101;
+ SELECT * FROM Students_cs_02 WHERE StudentID = 101;
+ 
+
+ --Remove a student who withdrew from the university.
+ DELETE FROM Students_cs_02 WHERE StudentID = 101;
+ select * from Students_cs_02;
+
+ --Retrieve the department name and location for the student with ID 102.
+ SELECT D.DepartmentName, D.Location FROM Departments_cs_02 D JOIN Students_cs_02 S ON
+ D.DepartmentID = S.DepartmentID WHERE S.StudentID = 102;
+
+--Write a SQL query to retrieve the details of all faculty members in the Engineering department.
+ SELECT * FROM Faculty_cs_02 WHERE DepartmentID = (SELECT DepartmentID FROM
+ Departments_cs_02 WHERE DepartmentName = 'Engineering');
